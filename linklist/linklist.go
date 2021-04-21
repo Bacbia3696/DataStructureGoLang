@@ -16,14 +16,17 @@ type LinkedList struct {
 	size int
 }
 
+var ErrListEmpty = fmt.Errorf("list is empty")
+var ErrIndexOutOfBound = fmt.Errorf("index out of bound")
+
 // Display print all the link list.
 func (ll *LinkedList) Display() error {
 	if ll.head == nil {
-		return fmt.Errorf("display: List is empty")
+		return ErrListEmpty
 	}
 	current := ll.head
 	for current != nil {
-		fmt.Printf("%v -> ", current.data)
+		fmt.Printf("%v, ", current.data)
 		current = current.next
 	}
 	fmt.Println()
@@ -67,4 +70,28 @@ func (ll *LinkedList) InsertEnd(data interface{}) {
 		}
 		current.next = node
 	}
+	ll.size++
+}
+
+func (ll *LinkedList) Insert(pos int, data interface{}) error {
+	if pos < 0 || pos > ll.size {
+		return ErrIndexOutOfBound
+	}
+	if pos == 0 {
+		ll.InsertBegin(data)
+		return nil
+	}
+	node := &ListNode{
+		data: data,
+	}
+	var prev, current *ListNode
+	current = ll.head
+	for i := 0; i < pos; i++ {
+		prev = current
+		current = current.next
+	}
+	prev.next = node
+	node.next = current
+	ll.size++
+	return nil
 }
