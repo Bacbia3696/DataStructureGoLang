@@ -95,3 +95,46 @@ func (ll *LinkedList) Insert(pos int, data interface{}) error {
 	ll.size++
 	return nil
 }
+
+func (ll *LinkedList) DeleteFirst() (interface{}, error) {
+	current := ll.head
+	if current == nil {
+		return nil, ErrListEmpty
+	}
+	ll.head = current.next
+	ll.size--
+	return 1, nil
+}
+
+func (ll *LinkedList) DeleteLast() (interface{}, error) {
+	if ll.size == 0 {
+		return nil, ErrListEmpty
+	}
+	current := ll.head
+	var prev *ListNode
+	for current.next != nil {
+		prev = current
+		current = current.next
+	}
+	prev.next = nil
+	ll.size--
+	return current.data, nil
+}
+
+func (ll *LinkedList) Delete(pos int) (interface{}, error) {
+	if pos < -1 || pos >= ll.size {
+		return nil, ErrIndexOutOfBound
+	}
+	if pos == 0 {
+		return ll.DeleteFirst()
+	}
+	current := ll.head
+	var prev *ListNode
+	for i := 0; i < pos; i++ {
+		prev = current
+		current = current.next
+	}
+	prev.next = current.next
+	ll.size--
+	return current.data, nil
+}

@@ -46,6 +46,46 @@ func TestDisplay(t *testing.T) {
 	})
 }
 
+func TestDeleteFirst(t *testing.T) {
+	l := LinkedList{}
+	l.InsertBegin(0)
+	Convey("Remove 1 element linklist should have length 0", t, func() {
+		i, err := l.DeleteFirst()
+		So(err, ShouldEqual, nil)
+		v := i.(int)
+		So(v, ShouldEqual, 1)
+	})
+}
+
+func TestDeleteLast(t *testing.T) {
+	l := LinkedList{}
+	l.InsertBegin(0)
+	l.InsertBegin(1)
+	Convey("Remove last element of 1, 0 should return 0", t, func() {
+		l.Display()
+		i, err := l.DeleteLast()
+		So(err, ShouldEqual, nil)
+		v := i.(int)
+		So(v, ShouldEqual, 0)
+		l.Display()
+	})
+}
+
+func TestDelete(t *testing.T) {
+	l := LinkedList{}
+	l.InsertBegin(0)
+	l.InsertBegin(1)
+	l.InsertBegin(2)
+	Convey("Remove middle element", t, func() {
+		l.Display()
+		i, err := l.Delete(1)
+		So(err, ShouldEqual, nil)
+		v := i.(int)
+		So(v, ShouldEqual, 1)
+		l.Display()
+	})
+}
+
 func TestInsert(t *testing.T) {
 	l := LinkedList{}
 	l.Insert(0, 10)
@@ -55,5 +95,7 @@ func TestInsert(t *testing.T) {
 	l.Insert(1, 1000)
 	l.Display()
 	l.Insert(3, 10000)
+	l.Display()
+	l.Insert(-4, 10000)
 	l.Display()
 }
